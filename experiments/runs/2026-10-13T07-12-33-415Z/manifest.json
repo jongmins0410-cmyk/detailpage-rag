@@ -1,0 +1,643 @@
+{
+  "name": "RAG 유무 비교 E1",
+  "runId": "2026-10-13T07-12-33-415Z",
+  "startedAt": "2026-10-13T07:12:33.415Z",
+  "status": "completed",
+  "environment": {
+    "node": "v26.5.0",
+    "platform": "win32",
+    "arch": "x64",
+    "cpu": "AMD Ryzen 7 9800X3D 8-Core Processor           ",
+    "ramGB": 31
+  },
+  "modelInfo": {
+    "host": "http://127.0.0.1:11434",
+    "model": "qwen3.5:2b",
+    "digest": "0689d44085e06d165161a8a9a1731344278cfb5aade63a3c3dbdb48ab54b130a",
+    "details": {
+      "parent_model": "model.gguf",
+      "format": "gguf",
+      "family": "qwen35",
+      "families": [
+        "qwen35"
+      ],
+      "parameter_size": "1.9B",
+      "quantization_level": "Q8_0",
+      "context_length": 262144,
+      "embedding_length": 2048,
+      "runner": "llamacpp"
+    }
+  },
+  "embedding": {
+    "model": "onnx-community/embeddinggemma-300m-ONNX",
+    "dtype": "q8",
+    "dim": 768,
+    "corpusHash": "19002ea753fc25aea25b35d1bc655277f0083e8e4c541591d8f32bcff63d8a7c"
+  },
+  "settings": {
+    "topK": 3,
+    "temperature": 0,
+    "seed": 42,
+    "numPredict": 320,
+    "think": false
+  },
+  "design": "질문 원문·순서·모델·생성 설정은 고정. 기준군은 검색 없는 일반 안내 프롬프트, RAG군은 검색 자료 및 근거 제한 규칙을 사용한다. 따라서 순수 검색 효과만 분리한 인과 실험이 아닌 두 파이프라인의 비교다.",
+  "questions": [
+    {
+      "id": "Q1",
+      "kind": "정상",
+      "question": "상세페이지 제작 전에 어떤 상품 정보를 준비해야 하나요?",
+      "expectedIds": [
+        "DP-001"
+      ],
+      "expected": "브랜드·상품 정보와 원본 자료를 안내하고 빈 항목을 추정하지 않는다."
+    },
+    {
+      "id": "Q2",
+      "kind": "경계",
+      "question": "제품 사진이 두 장 있어요. 사진 품질이 좋은지 지금 판단해 줄 수 있나요?",
+      "expectedIds": [
+        "DP-002"
+      ],
+      "expected": "CLI는 사진을 보지 못하므로 품질을 확정하지 않고 별도 확인을 안내한다."
+    },
+    {
+      "id": "Q3",
+      "kind": "정상",
+      "question": "제품 효능과 성능 수치를 상세페이지에 쓰기 전에 무엇을 확인하나요?",
+      "expectedIds": [
+        "DP-003"
+      ],
+      "expected": "확인 가능한 근거와 적용 조건을 요구한다."
+    },
+    {
+      "id": "Q4",
+      "kind": "경계",
+      "question": "우리 프로젝트 무료 수정은 정확히 몇 번이고 추가 비용은 얼마인가요?",
+      "expectedIds": [
+        "DP-005",
+        "DP-004"
+      ],
+      "expected": "실제 계약이 없으므로 횟수와 금액을 지어내지 않고 서면 합의를 확인한다."
+    },
+    {
+      "id": "Q5",
+      "kind": "정상",
+      "question": "웹 검색으로 찾은 사진과 폰트를 바로 사용해도 되나요?",
+      "expectedIds": [
+        "DP-007"
+      ],
+      "expected": "검색 발견과 사용 권한은 다르며 라이선스·허가를 확인한다."
+    },
+    {
+      "id": "Q6",
+      "kind": "정상",
+      "question": "일반 텍스트와 큰 텍스트의 최소 대비 기준은 각각 얼마인가요?",
+      "expectedIds": [
+        "DP-012"
+      ],
+      "expected": "일반 4.5:1, 큰 텍스트 3:1의 조건을 뒤바꾸지 않고 공식 출처를 표시한다."
+    },
+    {
+      "id": "Q7",
+      "kind": "범위밖",
+      "question": "지금 내 쇼핑몰에서 판매 중인 텀블러의 실제 재고가 몇 개인가요?",
+      "expectedIds": [],
+      "expected": "실시간 재고 연동이 없으므로 수량을 생성하지 않고 실제 관리 시스템 확인을 안내한다."
+    },
+    {
+      "id": "Q8",
+      "kind": "무관",
+      "question": "내일 서울 날씨는 어떤가요?",
+      "expectedIds": [],
+      "expected": "날씨 자료가 없음을 밝히고 예보를 지어내지 않는다."
+    },
+    {
+      "id": "Q9",
+      "kind": "무관",
+      "question": "김치찌개 만드는 레시피를 알려 주세요.",
+      "expectedIds": [],
+      "expected": "자료 범위 밖임을 밝히고 검색 문서로 레시피를 만들어내지 않는다."
+    }
+  ],
+  "searches": [
+    {
+      "id": "Q1",
+      "question": "상세페이지 제작 전에 어떤 상품 정보를 준비해야 하나요?",
+      "k": 3,
+      "threshold": 0.55,
+      "weak": false,
+      "elapsedMs": 1346,
+      "results": [
+        {
+          "id": "DP-001",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 상세페이지 시작 전에는 브랜드명, 판매 채널, 제품명·옵션·구성, 핵심 고객, 해결하려는 문제, 차별점, 사용 방법, 보관·주의 정보와 현재 판매 페이지를 하나의 입력표로 수집한다. 사실과 표현 아이디어를 분리하고, 비어 있는 항목은 추정하지 않는다. 담당자가 확인 가능한 원본 링크나 문서를 함께 남겨 이후 문구 검토의 기준점으로 사용한다.",
+          "url": "docs/sop.md#brand-product-intake",
+          "section": "브랜드·상품 정보 수집",
+          "score": 0.7691070259507827
+        },
+        {
+          "id": "DP-014",
+          "text": "Google Search Central의 Product 구조화 데이터 안내에 따르면 Product 마크업은 제품 페이지가 가격·재고·리뷰 같은 추가 제품 정보가 포함된 검색 결과 표시 대상이 될 수 있게 한다. 안내는 필수 속성 추가, 가이드 준수, Rich Results Test로의 검증, 배포 후 URL 검사 같은 흐름을 제시한다. 상세페이지 제작에서는 화면에 보이는 실제 제품 정보와 마크업 값이 서로 어긋나지 않게 게시 전 확인하는 참고로 사용한다.",
+          "url": "https://developers.google.com/search/docs/appearance/structured-data/product-snippet",
+          "section": "외부 참고: 제품 구조화 데이터",
+          "score": 0.6569559952837114
+        },
+        {
+          "id": "DP-010",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 게시 직전에는 링크·버튼·옵션명·가격·재고·배송·프로모션 문구가 승인된 최신 정보와 맞는지, 오탈자와 잘린 요소가 없는지, 모바일과 데스크톱에서 주요 구매 흐름이 열리는지를 확인한다. 확인하지 못한 항목은 확인 불가로 남기고 임의로 정상이라고 처리하지 않는다. 게시 후 발견된 오류는 캡처·발견 시각·수정 내용으로 기록해 다음 검토에 반영한다.",
+          "url": "docs/sop.md#final-prepublish",
+          "section": "게시 전 최종 점검",
+          "score": 0.6474927479204876
+        }
+      ],
+      "expectedIds": [
+        "DP-001"
+      ],
+      "expectedInTop3": true
+    },
+    {
+      "id": "Q2",
+      "question": "제품 사진이 두 장 있어요. 사진 품질이 좋은지 지금 판단해 줄 수 있나요?",
+      "k": 3,
+      "threshold": 0.55,
+      "weak": false,
+      "elapsedMs": 79,
+      "results": [
+        {
+          "id": "DP-002",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 사진은 파일명, 촬영 대상, 컷의 목적(대표·디테일·사용 장면·구성품), 해상도, 배경, 보정 필요 여부와 사용 허가 상태를 목록화한다. 이 SOP는 CLI에서 실제 업로드 이미지의 선명도·색감·누락을 판정할 수 없으므로, 이미지가 있다면 디자이너가 화면에서 별도로 확인하고 결과를 기록해야 한다. 미제공 컷은 필요한 장면과 우선순위로 요청한다.",
+          "url": "docs/sop.md#photo-readiness",
+          "section": "사진 준비도 확인 범위",
+          "score": 0.6551118150566836
+        },
+        {
+          "id": "DP-011",
+          "text": "W3C WAI의 이미지 대체텍스트 결정 트리는 이미지가 링크나 버튼의 기능을 맡는지, 페이지 의미에 기여하는지, 단순 장식인지 등을 먼저 판단하도록 안내한다. 상세페이지에서는 의미 있는 제품 사진은 맥락상 필요한 정보를 짧게 전달하고, 기능 이미지라면 모양보다 실행 결과를 알리며, 장식용 이미지는 읽기 흐름에 불필요한 정보를 더하지 않도록 처리하는 점검 기준으로 활용할 수 있다.",
+          "url": "https://www.w3.org/WAI/tutorials/images/decision-tree/",
+          "section": "외부 참고: 이미지 대체텍스트",
+          "score": 0.6245723812927935
+        },
+        {
+          "id": "DP-013",
+          "text": "MDN의 반응형 이미지 안내는 화면 크기와 해상도가 다른 기기에서 알맞은 이미지를 제공해 성능과 가독성을 돕는 방법을 설명한다. 같은 이미지를 여러 해상도로 제공할 때는 srcset과 sizes를, 좁은 화면에서 핵심 피사체가 달라져야 하는 아트 디렉션에는 picture를 사용할 수 있다. 상세페이지의 긴 이미지와 제품 컷은 모바일에서 중요한 정보가 작아지거나 불필요하게 큰 파일을 받지 않는지 함께 검토한다.",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images",
+          "section": "외부 참고: 반응형 이미지",
+          "score": 0.5899354453346344
+        }
+      ],
+      "expectedIds": [
+        "DP-002"
+      ],
+      "expectedInTop3": true
+    },
+    {
+      "id": "Q3",
+      "question": "제품 효능과 성능 수치를 상세페이지에 쓰기 전에 무엇을 확인하나요?",
+      "k": 3,
+      "threshold": 0.55,
+      "weak": false,
+      "elapsedMs": 82,
+      "results": [
+        {
+          "id": "DP-003",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 성능, 비교, 수치, 인증, 후기, 전후 결과처럼 구매 판단에 영향을 주는 표현은 출처·확인일·적용 조건을 문구와 연결해 보관한다. 제조사 자료, 시험성적서, 공식 사양, 허가된 고객 후기 등 확인 가능한 근거가 없으면 사실처럼 단정하지 않고 확인 요청 또는 삭제 후보로 표시한다. 이는 법률 자문이 아니라 디자인·콘텐츠 검토를 위한 증빙 정리 절차다.",
+          "url": "docs/sop.md#claim-evidence",
+          "section": "성능·효능 표현의 근거",
+          "score": 0.717612311854317
+        },
+        {
+          "id": "DP-001",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 상세페이지 시작 전에는 브랜드명, 판매 채널, 제품명·옵션·구성, 핵심 고객, 해결하려는 문제, 차별점, 사용 방법, 보관·주의 정보와 현재 판매 페이지를 하나의 입력표로 수집한다. 사실과 표현 아이디어를 분리하고, 비어 있는 항목은 추정하지 않는다. 담당자가 확인 가능한 원본 링크나 문서를 함께 남겨 이후 문구 검토의 기준점으로 사용한다.",
+          "url": "docs/sop.md#brand-product-intake",
+          "section": "브랜드·상품 정보 수집",
+          "score": 0.7109174324103144
+        },
+        {
+          "id": "DP-010",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 게시 직전에는 링크·버튼·옵션명·가격·재고·배송·프로모션 문구가 승인된 최신 정보와 맞는지, 오탈자와 잘린 요소가 없는지, 모바일과 데스크톱에서 주요 구매 흐름이 열리는지를 확인한다. 확인하지 못한 항목은 확인 불가로 남기고 임의로 정상이라고 처리하지 않는다. 게시 후 발견된 오류는 캡처·발견 시각·수정 내용으로 기록해 다음 검토에 반영한다.",
+          "url": "docs/sop.md#final-prepublish",
+          "section": "게시 전 최종 점검",
+          "score": 0.6955402655603021
+        }
+      ],
+      "expectedIds": [
+        "DP-003"
+      ],
+      "expectedInTop3": true
+    },
+    {
+      "id": "Q4",
+      "question": "우리 프로젝트 무료 수정은 정확히 몇 번이고 추가 비용은 얼마인가요?",
+      "k": 3,
+      "threshold": 0.55,
+      "weak": false,
+      "elapsedMs": 82,
+      "results": [
+        {
+          "id": "DP-005",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 수정은 어떤 시안의 어떤 요소를 왜 바꾸는지 식별되도록 코멘트를 묶어 받고, 합의된 범위 안의 조정과 새 요구를 구분한다. 수정 가능 횟수, 추가 비용, 납기, 응답 기한은 프로젝트마다 별도 서면 합의가 있을 때만 적용한다. 이 교육용 SOP는 고정 수치나 조건을 만들어 내지 않으며, 승인본의 버전명과 승인 시점을 남겨 혼선을 줄인다.",
+          "url": "docs/sop.md#revision-boundaries",
+          "section": "수정 기준의 사전 확인",
+          "score": 0.6572418919389558
+        },
+        {
+          "id": "DP-004",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 첫 합의에는 산출물 종류, 포함 섹션, 제공 자료, 담당자, 검토 방식과 제외 항목을 명확히 적는다. 변경 요청은 날짜·요청 내용·영향 범위·승인 여부를 한 줄씩 기록하고, 구두 요청이나 메신저의 모호한 표현은 확정으로 취급하지 않는다. 변경이 디자인·문구·일정에 미치는 영향은 확인 후 진행하며, 이 문서는 특정 횟수·가격·기간을 정하지 않는다.",
+          "url": "docs/sop.md#scope-change-log",
+          "section": "범위와 서면 변경 관리",
+          "score": 0.5878302104318024
+        },
+        {
+          "id": "DP-010",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 게시 직전에는 링크·버튼·옵션명·가격·재고·배송·프로모션 문구가 승인된 최신 정보와 맞는지, 오탈자와 잘린 요소가 없는지, 모바일과 데스크톱에서 주요 구매 흐름이 열리는지를 확인한다. 확인하지 못한 항목은 확인 불가로 남기고 임의로 정상이라고 처리하지 않는다. 게시 후 발견된 오류는 캡처·발견 시각·수정 내용으로 기록해 다음 검토에 반영한다.",
+          "url": "docs/sop.md#final-prepublish",
+          "section": "게시 전 최종 점검",
+          "score": 0.5564502776419503
+        }
+      ],
+      "expectedIds": [
+        "DP-005",
+        "DP-004"
+      ],
+      "expectedInTop3": true
+    },
+    {
+      "id": "Q5",
+      "question": "웹 검색으로 찾은 사진과 폰트를 바로 사용해도 되나요?",
+      "k": 3,
+      "threshold": 0.55,
+      "weak": false,
+      "elapsedMs": 75,
+      "results": [
+        {
+          "id": "DP-007",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 외부 사진, 아이콘, 폰트, 음악·영상, 리뷰 캡처와 상표 요소는 출처, 라이선스 또는 사용 허가, 사용 범위, 표기 필요 여부를 자산대장에 기록한다. 검색으로 찾았다는 사실만으로 사용 권한이 생기지 않으며, 불명확한 자산은 대체안이나 추가 확인 대상으로 둔다. 이는 권리 판단이나 법률 조언이 아니라 권한 정보를 누락하지 않기 위한 운영 제안이다.",
+          "url": "docs/sop.md#copyright-usage",
+          "section": "이미지·폰트·콘텐츠 사용 권한",
+          "score": 0.6846796883944335
+        },
+        {
+          "id": "DP-011",
+          "text": "W3C WAI의 이미지 대체텍스트 결정 트리는 이미지가 링크나 버튼의 기능을 맡는지, 페이지 의미에 기여하는지, 단순 장식인지 등을 먼저 판단하도록 안내한다. 상세페이지에서는 의미 있는 제품 사진은 맥락상 필요한 정보를 짧게 전달하고, 기능 이미지라면 모양보다 실행 결과를 알리며, 장식용 이미지는 읽기 흐름에 불필요한 정보를 더하지 않도록 처리하는 점검 기준으로 활용할 수 있다.",
+          "url": "https://www.w3.org/WAI/tutorials/images/decision-tree/",
+          "section": "외부 참고: 이미지 대체텍스트",
+          "score": 0.643128044473942
+        },
+        {
+          "id": "DP-013",
+          "text": "MDN의 반응형 이미지 안내는 화면 크기와 해상도가 다른 기기에서 알맞은 이미지를 제공해 성능과 가독성을 돕는 방법을 설명한다. 같은 이미지를 여러 해상도로 제공할 때는 srcset과 sizes를, 좁은 화면에서 핵심 피사체가 달라져야 하는 아트 디렉션에는 picture를 사용할 수 있다. 상세페이지의 긴 이미지와 제품 컷은 모바일에서 중요한 정보가 작아지거나 불필요하게 큰 파일을 받지 않는지 함께 검토한다.",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images",
+          "section": "외부 참고: 반응형 이미지",
+          "score": 0.5869934704538933
+        }
+      ],
+      "expectedIds": [
+        "DP-007"
+      ],
+      "expectedInTop3": true
+    },
+    {
+      "id": "Q6",
+      "question": "일반 텍스트와 큰 텍스트의 최소 대비 기준은 각각 얼마인가요?",
+      "k": 3,
+      "threshold": 0.55,
+      "weak": false,
+      "elapsedMs": 80,
+      "results": [
+        {
+          "id": "DP-012",
+          "text": "W3C WAI의 WCAG 2.2 대비 최소 기준 설명은 일반 텍스트와 텍스트 이미지의 시각적 표현에 보통 최소 4.5:1 대비를 제시하고, 큰 텍스트에는 3:1 예외를 설명한다. 상세페이지에서는 배경 사진 위의 가격, 혜택, CTA 문구처럼 중요한 글자가 색만으로 희미해지지 않는지 실제 조합에서 점검하는 참고 기준으로 삼을 수 있다. 로고 등 예외의 세부 적용은 원문을 확인한다.",
+          "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+          "section": "외부 참고: 텍스트 대비",
+          "score": 0.7689527808784373
+        },
+        {
+          "id": "DP-011",
+          "text": "W3C WAI의 이미지 대체텍스트 결정 트리는 이미지가 링크나 버튼의 기능을 맡는지, 페이지 의미에 기여하는지, 단순 장식인지 등을 먼저 판단하도록 안내한다. 상세페이지에서는 의미 있는 제품 사진은 맥락상 필요한 정보를 짧게 전달하고, 기능 이미지라면 모양보다 실행 결과를 알리며, 장식용 이미지는 읽기 흐름에 불필요한 정보를 더하지 않도록 처리하는 점검 기준으로 활용할 수 있다.",
+          "url": "https://www.w3.org/WAI/tutorials/images/decision-tree/",
+          "section": "외부 참고: 이미지 대체텍스트",
+          "score": 0.5790469206658553
+        },
+        {
+          "id": "DP-013",
+          "text": "MDN의 반응형 이미지 안내는 화면 크기와 해상도가 다른 기기에서 알맞은 이미지를 제공해 성능과 가독성을 돕는 방법을 설명한다. 같은 이미지를 여러 해상도로 제공할 때는 srcset과 sizes를, 좁은 화면에서 핵심 피사체가 달라져야 하는 아트 디렉션에는 picture를 사용할 수 있다. 상세페이지의 긴 이미지와 제품 컷은 모바일에서 중요한 정보가 작아지거나 불필요하게 큰 파일을 받지 않는지 함께 검토한다.",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images",
+          "section": "외부 참고: 반응형 이미지",
+          "score": 0.5784758340890946
+        }
+      ],
+      "expectedIds": [
+        "DP-012"
+      ],
+      "expectedInTop3": true
+    },
+    {
+      "id": "Q7",
+      "question": "지금 내 쇼핑몰에서 판매 중인 텀블러의 실제 재고가 몇 개인가요?",
+      "k": 3,
+      "threshold": 0.55,
+      "weak": true,
+      "elapsedMs": 80,
+      "results": [
+        {
+          "id": "DP-009",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 납품 시 최종 파일, 웹용 이미지, 원본 편집 파일의 포함 여부, 버전명, 게시 담당자와 보관 위치를 인계 목록으로 확인한다. 고객 명단, 주문 정보, 연락처, 비공개 성과 자료는 상세페이지 제작에 필요한 최소 범위만 받고 공유 권한을 제한한다. 외부 전송이나 장기 보관 전에는 프로젝트에서 합의한 접근·삭제 기준을 확인하며, 이 문서는 실제 보안 정책을 선언하지 않는다.",
+          "url": "docs/sop.md#handoff-privacy",
+          "section": "납품·개인정보 처리",
+          "score": 0.5398726672925769
+        },
+        {
+          "id": "DP-001",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 상세페이지 시작 전에는 브랜드명, 판매 채널, 제품명·옵션·구성, 핵심 고객, 해결하려는 문제, 차별점, 사용 방법, 보관·주의 정보와 현재 판매 페이지를 하나의 입력표로 수집한다. 사실과 표현 아이디어를 분리하고, 비어 있는 항목은 추정하지 않는다. 담당자가 확인 가능한 원본 링크나 문서를 함께 남겨 이후 문구 검토의 기준점으로 사용한다.",
+          "url": "docs/sop.md#brand-product-intake",
+          "section": "브랜드·상품 정보 수집",
+          "score": 0.539147318453012
+        },
+        {
+          "id": "DP-010",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 게시 직전에는 링크·버튼·옵션명·가격·재고·배송·프로모션 문구가 승인된 최신 정보와 맞는지, 오탈자와 잘린 요소가 없는지, 모바일과 데스크톱에서 주요 구매 흐름이 열리는지를 확인한다. 확인하지 못한 항목은 확인 불가로 남기고 임의로 정상이라고 처리하지 않는다. 게시 후 발견된 오류는 캡처·발견 시각·수정 내용으로 기록해 다음 검토에 반영한다.",
+          "url": "docs/sop.md#final-prepublish",
+          "section": "게시 전 최종 점검",
+          "score": 0.5293864853322736
+        }
+      ],
+      "expectedIds": [],
+      "expectedInTop3": null
+    },
+    {
+      "id": "Q8",
+      "question": "내일 서울 날씨는 어떤가요?",
+      "k": 3,
+      "threshold": 0.55,
+      "weak": true,
+      "elapsedMs": 77,
+      "results": [
+        {
+          "id": "DP-005",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 수정은 어떤 시안의 어떤 요소를 왜 바꾸는지 식별되도록 코멘트를 묶어 받고, 합의된 범위 안의 조정과 새 요구를 구분한다. 수정 가능 횟수, 추가 비용, 납기, 응답 기한은 프로젝트마다 별도 서면 합의가 있을 때만 적용한다. 이 교육용 SOP는 고정 수치나 조건을 만들어 내지 않으며, 승인본의 버전명과 승인 시점을 남겨 혼선을 줄인다.",
+          "url": "docs/sop.md#revision-boundaries",
+          "section": "수정 기준의 사전 확인",
+          "score": 0.4209965695265585
+        },
+        {
+          "id": "DP-002",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 사진은 파일명, 촬영 대상, 컷의 목적(대표·디테일·사용 장면·구성품), 해상도, 배경, 보정 필요 여부와 사용 허가 상태를 목록화한다. 이 SOP는 CLI에서 실제 업로드 이미지의 선명도·색감·누락을 판정할 수 없으므로, 이미지가 있다면 디자이너가 화면에서 별도로 확인하고 결과를 기록해야 한다. 미제공 컷은 필요한 장면과 우선순위로 요청한다.",
+          "url": "docs/sop.md#photo-readiness",
+          "section": "사진 준비도 확인 범위",
+          "score": 0.4158824812749806
+        },
+        {
+          "id": "DP-004",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 첫 합의에는 산출물 종류, 포함 섹션, 제공 자료, 담당자, 검토 방식과 제외 항목을 명확히 적는다. 변경 요청은 날짜·요청 내용·영향 범위·승인 여부를 한 줄씩 기록하고, 구두 요청이나 메신저의 모호한 표현은 확정으로 취급하지 않는다. 변경이 디자인·문구·일정에 미치는 영향은 확인 후 진행하며, 이 문서는 특정 횟수·가격·기간을 정하지 않는다.",
+          "url": "docs/sop.md#scope-change-log",
+          "section": "범위와 서면 변경 관리",
+          "score": 0.40774226070196207
+        }
+      ],
+      "expectedIds": [],
+      "expectedInTop3": null
+    },
+    {
+      "id": "Q9",
+      "question": "김치찌개 만드는 레시피를 알려 주세요.",
+      "k": 3,
+      "threshold": 0.55,
+      "weak": true,
+      "elapsedMs": 72,
+      "results": [
+        {
+          "id": "DP-001",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 상세페이지 시작 전에는 브랜드명, 판매 채널, 제품명·옵션·구성, 핵심 고객, 해결하려는 문제, 차별점, 사용 방법, 보관·주의 정보와 현재 판매 페이지를 하나의 입력표로 수집한다. 사실과 표현 아이디어를 분리하고, 비어 있는 항목은 추정하지 않는다. 담당자가 확인 가능한 원본 링크나 문서를 함께 남겨 이후 문구 검토의 기준점으로 사용한다.",
+          "url": "docs/sop.md#brand-product-intake",
+          "section": "브랜드·상품 정보 수집",
+          "score": 0.4018415268988992
+        },
+        {
+          "id": "DP-014",
+          "text": "Google Search Central의 Product 구조화 데이터 안내에 따르면 Product 마크업은 제품 페이지가 가격·재고·리뷰 같은 추가 제품 정보가 포함된 검색 결과 표시 대상이 될 수 있게 한다. 안내는 필수 속성 추가, 가이드 준수, Rich Results Test로의 검증, 배포 후 URL 검사 같은 흐름을 제시한다. 상세페이지 제작에서는 화면에 보이는 실제 제품 정보와 마크업 값이 서로 어긋나지 않게 게시 전 확인하는 참고로 사용한다.",
+          "url": "https://developers.google.com/search/docs/appearance/structured-data/product-snippet",
+          "section": "외부 참고: 제품 구조화 데이터",
+          "score": 0.39015122634460603
+        },
+        {
+          "id": "DP-005",
+          "text": "[교육용 제안 워크플로, 실제 정책 아님] 수정은 어떤 시안의 어떤 요소를 왜 바꾸는지 식별되도록 코멘트를 묶어 받고, 합의된 범위 안의 조정과 새 요구를 구분한다. 수정 가능 횟수, 추가 비용, 납기, 응답 기한은 프로젝트마다 별도 서면 합의가 있을 때만 적용한다. 이 교육용 SOP는 고정 수치나 조건을 만들어 내지 않으며, 승인본의 버전명과 승인 시점을 남겨 혼선을 줄인다.",
+          "url": "docs/sop.md#revision-boundaries",
+          "section": "수정 기준의 사전 확인",
+          "score": 0.3855340870655166
+        }
+      ],
+      "expectedIds": [],
+      "expectedInTop3": null
+    }
+  ],
+  "runs": [
+    {
+      "id": "Q1",
+      "mode": "no-rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q1-no-rag.json",
+      "ok": true,
+      "elapsedMs": 4375,
+      "citedIds": [],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q1",
+      "mode": "rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q1-rag.json",
+      "ok": true,
+      "elapsedMs": 490,
+      "citedIds": [
+        "DP-001",
+        "DP-010"
+      ],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q2",
+      "mode": "no-rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q2-no-rag.json",
+      "ok": true,
+      "elapsedMs": 295,
+      "citedIds": [],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q2",
+      "mode": "rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q2-rag.json",
+      "ok": true,
+      "elapsedMs": 564,
+      "citedIds": [
+        "DP-002",
+        "DP-011",
+        "DP-013"
+      ],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q3",
+      "mode": "no-rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q3-no-rag.json",
+      "ok": true,
+      "elapsedMs": 516,
+      "citedIds": [],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q3",
+      "mode": "rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q3-rag.json",
+      "ok": true,
+      "elapsedMs": 1037,
+      "citedIds": [
+        "DP-001"
+      ],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q4",
+      "mode": "no-rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q4-no-rag.json",
+      "ok": true,
+      "elapsedMs": 237,
+      "citedIds": [],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q4",
+      "mode": "rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q4-rag.json",
+      "ok": true,
+      "elapsedMs": 517,
+      "citedIds": [
+        "DP-005",
+        "DP-004"
+      ],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q5",
+      "mode": "no-rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q5-no-rag.json",
+      "ok": true,
+      "elapsedMs": 367,
+      "citedIds": [],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q5",
+      "mode": "rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q5-rag.json",
+      "ok": true,
+      "elapsedMs": 566,
+      "citedIds": [
+        "DP-007",
+        "DP-011"
+      ],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q6",
+      "mode": "no-rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q6-no-rag.json",
+      "ok": true,
+      "elapsedMs": 309,
+      "citedIds": [],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q6",
+      "mode": "rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q6-rag.json",
+      "ok": true,
+      "elapsedMs": 503,
+      "citedIds": [
+        "DP-012"
+      ],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q7",
+      "mode": "no-rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q7-no-rag.json",
+      "ok": true,
+      "elapsedMs": 366,
+      "citedIds": [],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q7",
+      "mode": "rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q7-rag.json",
+      "ok": true,
+      "elapsedMs": 455,
+      "citedIds": [
+        "DP-009",
+        "DP-001",
+        "DP-010"
+      ],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q8",
+      "mode": "no-rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q8-no-rag.json",
+      "ok": true,
+      "elapsedMs": 215,
+      "citedIds": [],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q8",
+      "mode": "rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q8-rag.json",
+      "ok": true,
+      "elapsedMs": 344,
+      "citedIds": [
+        "DP-005"
+      ],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q9",
+      "mode": "no-rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q9-no-rag.json",
+      "ok": true,
+      "elapsedMs": 709,
+      "citedIds": [],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    },
+    {
+      "id": "Q9",
+      "mode": "rag",
+      "file": "experiments/runs/2026-10-13T07-12-33-415Z/Q9-rag.json",
+      "ok": true,
+      "elapsedMs": 312,
+      "citedIds": [
+        "DP-014"
+      ],
+      "unknownCitations": [],
+      "doneReason": "stop"
+    }
+  ],
+  "finishedAt": "2026-10-13T07:12:47.715Z"
+}

@@ -1,0 +1,43 @@
+{
+  "case": {
+    "id": "Q8",
+    "kind": "무관",
+    "question": "내일 서울 날씨는 어떤가요?",
+    "expectedIds": [],
+    "expected": "날씨 자료가 없음을 밝히고 예보를 지어내지 않는다."
+  },
+  "startedAt": "2026-10-13T07:12:46.043Z",
+  "finishedAt": "2026-10-13T07:12:46.258Z",
+  "mode": "no-rag",
+  "question": "내일 서울 날씨는 어떤가요?",
+  "settings": {
+    "k": 3,
+    "temperature": 0,
+    "seed": 42,
+    "numPredict": 320,
+    "think": false
+  },
+  "retrieval": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "당신은 상세페이지 제작 준비를 안내하는 도우미다. 한국어로 4문장 이내로 답한다. 모르는 사실, 가격, 회사별 정책이나 수치는 지어내지 말고 확인이 필요하다고 말한다. 외부 자료를 실제로 조회했다고 주장하지 않는다."
+    },
+    {
+      "role": "user",
+      "content": "내일 서울 날씨는 어떤가요?"
+    }
+  ],
+  "answer": "서울의 날씨를 정확히 알기 위해서는 실시간 기상청 데이터나 최신 예보 사이트를 확인해야 합니다. 정확한 정보를 원하시면 직접 검색해 보시는 것을 추천드립니다.",
+  "model": "qwen3.5:2b",
+  "modelDigest": "0689d44085e06d165161a8a9a1731344278cfb5aade63a3c3dbdb48ab54b130a",
+  "doneReason": "stop",
+  "usage": {
+    "promptTokens": 82,
+    "answerTokens": 36,
+    "totalDurationNs": 201114900
+  },
+  "citedIds": [],
+  "unknownCitations": [],
+  "elapsedMs": 215
+}

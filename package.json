@@ -1,0 +1,21 @@
+{
+  "name": "detailpage-rag",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "상세페이지 제작 준비 가이드 기반 로컬 RAG 과제",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "index": "node src/build-index.mjs",
+    "search": "node src/search.mjs",
+    "ask": "node src/ask.mjs",
+    "test": "node --test",
+    "validate": "node src/validate.mjs",
+    "experiment": "node src/experiment.mjs"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "4.3.1"
+  }
+}

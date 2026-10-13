@@ -1,0 +1,46 @@
+{
+  "case": {
+    "id": "Q4",
+    "kind": "경계",
+    "question": "우리 프로젝트 무료 수정은 정확히 몇 번이고 추가 비용은 얼마인가요?",
+    "expectedIds": [
+      "DP-005",
+      "DP-004"
+    ],
+    "expected": "실제 계약이 없으므로 횟수와 금액을 지어내지 않고 서면 합의를 확인한다."
+  },
+  "startedAt": "2026-10-13T07:12:42.369Z",
+  "finishedAt": "2026-10-13T07:12:42.606Z",
+  "mode": "no-rag",
+  "question": "우리 프로젝트 무료 수정은 정확히 몇 번이고 추가 비용은 얼마인가요?",
+  "settings": {
+    "k": 3,
+    "temperature": 0,
+    "seed": 42,
+    "numPredict": 320,
+    "think": false
+  },
+  "retrieval": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "당신은 상세페이지 제작 준비를 안내하는 도우미다. 한국어로 4문장 이내로 답한다. 모르는 사실, 가격, 회사별 정책이나 수치는 지어내지 말고 확인이 필요하다고 말한다. 외부 자료를 실제로 조회했다고 주장하지 않는다."
+    },
+    {
+      "role": "user",
+      "content": "우리 프로젝트 무료 수정은 정확히 몇 번이고 추가 비용은 얼마인가요?"
+    }
+  ],
+  "answer": "구체적인 수정 횟수나 추가 비용은 각 프로젝트의 계약 조건에 따라 달라지므로 정확한 정보를 확인하기 위해 해당 서비스 제공처의 공식 홈페이지나 고객 지원 채널을 직접 조회하셔야 합니다.",
+  "model": "qwen3.5:2b",
+  "modelDigest": "0689d44085e06d165161a8a9a1731344278cfb5aade63a3c3dbdb48ab54b130a",
+  "doneReason": "stop",
+  "usage": {
+    "promptTokens": 90,
+    "answerTokens": 44,
+    "totalDurationNs": 235508700
+  },
+  "citedIds": [],
+  "unknownCitations": [],
+  "elapsedMs": 237
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "url": "https://www.w3.org/WAI/tutorials/images/decision-tree/",
+    "finalUrl": "https://www.w3.org/WAI/tutorials/images/decision-tree/",
+    "observedAt": "2026-10-13T07:12:08.054Z",
+    "status": 200,
+    "ok": true,
+    "title": "An alt Decision Tree | Web Accessibility Initiative (WAI) | W3C",
+    "bodyBytes": 47021,
+    "sha256": "4e9d1d3b85fe92145d990d9a42726a239ee2f971b982f0024312dc01412d5361",
+    "chunkIds": [
+      "DP-011"
+    ],
+    "note": "HTTP 접근과 문서 동일성 확인용. 의미·요약 정확성은 docs/sources.md와 실제 원문 검토가 별도로 필요하다."
+  },
+  {
+    "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+    "finalUrl": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+    "observedAt": "2026-10-13T07:12:08.088Z",
+    "status": 200,
+    "ok": true,
+    "title": "Understanding Success Criterion 1.4.3: Contrast (Minimum) | WAI | W3C",
+    "bodyBytes": 80477,
+    "sha256": "a06d8a7dad2b3c9cadf1d93b1a5372d58adbab65be51e4c4680124d4e47c9999",
+    "chunkIds": [
+      "DP-012"
+    ],
+    "note": "HTTP 접근과 문서 동일성 확인용. 의미·요약 정확성은 docs/sources.md와 실제 원문 검토가 별도로 필요하다."
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images",
+    "finalUrl": "https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images",
+    "observedAt": "2026-10-13T07:12:08.088Z",
+    "status": 200,
+    "ok": true,
+    "title": "Using responsive images in HTML - HTML | MDN",
+    "bodyBytes": 202008,
+    "sha256": "26d003b33069337020acf4a535d1510dbc5384c56d49b148213fc52762bc486b",
+    "chunkIds": [
+      "DP-013"
+    ],
+    "note": "HTTP 접근과 문서 동일성 확인용. 의미·요약 정확성은 docs/sources.md와 실제 원문 검토가 별도로 필요하다."
+  },
+  {
+    "url": "https://developers.google.com/search/docs/appearance/structured-data/product-snippet",
+    "finalUrl": "https://developers.google.com/search/docs/appearance/structured-data/product-snippet",
+    "observedAt": "2026-10-13T07:12:08.089Z",
+    "status": 200,
+    "ok": true,
+    "title": "How To Add Product Snippet Structured Data | Google Search Central &nbsp;|&nbsp; Documentation &nbsp;|&nbsp; Google for Developers",
+    "bodyBytes": 259713,
+    "sha256": "c3a8842ff9e7616bca3b075b9e8e8e4f0242e902c970f71202bb25eb60f530d5",
+    "chunkIds": [
+      "DP-014"
+    ],
+    "note": "HTTP 접근과 문서 동일성 확인용. 의미·요약 정확성은 docs/sources.md와 실제 원문 검토가 별도로 필요하다."
+  }
+]

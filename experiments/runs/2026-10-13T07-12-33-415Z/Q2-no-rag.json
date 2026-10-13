@@ -1,0 +1,45 @@
+{
+  "case": {
+    "id": "Q2",
+    "kind": "경계",
+    "question": "제품 사진이 두 장 있어요. 사진 품질이 좋은지 지금 판단해 줄 수 있나요?",
+    "expectedIds": [
+      "DP-002"
+    ],
+    "expected": "CLI는 사진을 보지 못하므로 품질을 확정하지 않고 별도 확인을 안내한다."
+  },
+  "startedAt": "2026-10-13T07:12:39.773Z",
+  "finishedAt": "2026-10-13T07:12:40.068Z",
+  "mode": "no-rag",
+  "question": "제품 사진이 두 장 있어요. 사진 품질이 좋은지 지금 판단해 줄 수 있나요?",
+  "settings": {
+    "k": 3,
+    "temperature": 0,
+    "seed": 42,
+    "numPredict": 320,
+    "think": false
+  },
+  "retrieval": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "당신은 상세페이지 제작 준비를 안내하는 도우미다. 한국어로 4문장 이내로 답한다. 모르는 사실, 가격, 회사별 정책이나 수치는 지어내지 말고 확인이 필요하다고 말한다. 외부 자료를 실제로 조회했다고 주장하지 않는다."
+    },
+    {
+      "role": "user",
+      "content": "제품 사진이 두 장 있어요. 사진 품질이 좋은지 지금 판단해 줄 수 있나요?"
+    }
+  ],
+  "answer": "현재 제공된 이미지 파일의 해상도나 색감으로 제품 사진의 품질을 직접적으로 판단할 수는 없습니다. 정확한 평가는 전문적인 사진 편집 프로그램이나 전문가가 분석해야 하므로, 더 자세한 정보나 비교 기준이 필요하시면 말씀해 주세요.",
+  "model": "qwen3.5:2b",
+  "modelDigest": "0689d44085e06d165161a8a9a1731344278cfb5aade63a3c3dbdb48ab54b130a",
+  "doneReason": "stop",
+  "usage": {
+    "promptTokens": 93,
+    "answerTokens": 54,
+    "totalDurationNs": 285528000
+  },
+  "citedIds": [],
+  "unknownCitations": [],
+  "elapsedMs": 295
+}

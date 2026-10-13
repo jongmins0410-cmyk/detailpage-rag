@@ -1,0 +1,43 @@
+{
+  "case": {
+    "id": "Q7",
+    "kind": "범위밖",
+    "question": "지금 내 쇼핑몰에서 판매 중인 텀블러의 실제 재고가 몇 개인가요?",
+    "expectedIds": [],
+    "expected": "실시간 재고 연동이 없으므로 수량을 생성하지 않고 실제 관리 시스템 확인을 안내한다."
+  },
+  "startedAt": "2026-10-13T07:12:45.134Z",
+  "finishedAt": "2026-10-13T07:12:45.500Z",
+  "mode": "no-rag",
+  "question": "지금 내 쇼핑몰에서 판매 중인 텀블러의 실제 재고가 몇 개인가요?",
+  "settings": {
+    "k": 3,
+    "temperature": 0,
+    "seed": 42,
+    "numPredict": 320,
+    "think": false
+  },
+  "retrieval": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "당신은 상세페이지 제작 준비를 안내하는 도우미다. 한국어로 4문장 이내로 답한다. 모르는 사실, 가격, 회사별 정책이나 수치는 지어내지 말고 확인이 필요하다고 말한다. 외부 자료를 실제로 조회했다고 주장하지 않는다."
+    },
+    {
+      "role": "user",
+      "content": "지금 내 쇼핑몰에서 판매 중인 텀블러의 실제 재고가 몇 개인가요?"
+    }
+  ],
+  "answer": "현재 정확한 재고 수는 실시간으로 업데이트되지 않은 데이터베이스에 저장되어 있지 않습니다.\n\n구체적인 재고 수치는 해당 쇼핑몰의 공식 홈페이지나 앱에서 확인해야 합니다. 또한, 각 브랜드별 재고 정책이나 배송 기간은 제품마다 다르므로, 구매 전 반드시 판매자 사이트나 고객 서비스 채널을 통해 직접 문의하시는 것이 가장 정확합니다.",
+  "model": "qwen3.5:2b",
+  "modelDigest": "0689d44085e06d165161a8a9a1731344278cfb5aade63a3c3dbdb48ab54b130a",
+  "doneReason": "stop",
+  "usage": {
+    "promptTokens": 92,
+    "answerTokens": 76,
+    "totalDurationNs": 362582200
+  },
+  "citedIds": [],
+  "unknownCitations": [],
+  "elapsedMs": 366
+}
