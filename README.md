@@ -50,7 +50,7 @@ flowchart LR
 Node.js와 [Ollama](https://ollama.com/download/windows)를 설치하고 Ollama 앱을 실행합니다. 명령을 찾지 못하면 설치 후 터미널을 다시 열어 PATH를 갱신합니다. 이 프로그램은 로컬 HTTP API에 연결하므로 Ollama 앱이 이미 실행 중이면 사용할 수 있습니다.
 
 ```powershell
-git clone https://github.com/ntopofficial01-maker/detailpage-rag.git
+git clone https://github.com/jongmins0410-cmyk/detailpage-rag.git
 cd detailpage-rag
 npm ci
 ollama pull qwen3.5:2b
