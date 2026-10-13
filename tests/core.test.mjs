@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseArgs, sha256 } from '../src/utils.mjs';
+import { parseArgs, sha256, resolveLogPath } from '../src/utils.mjs';
 import { EMBEDDING_CONTRACT, DIM, documentInput, queryInput, validateVector } from '../src/embedder.mjs';
 import { validateChunks, validateStore, loadCorpus, validateLocalSources } from '../src/corpus.mjs';
 import { cosine, rankChunks, WEAK_THRESHOLD } from '../src/search.mjs';
 import { buildMessages } from '../src/prompt.mjs';
-import { readNDJSON, localHost } from '../src/ollama.mjs';
+import { readNDJSON, localHost, timeoutSetting } from '../src/ollama.mjs';
 const v = Array.from({length:DIM},(_,i)=>i===0?1:0);
 const chunk = {id:'DP-001',text:'교육용 상세페이지 제작 준비 기준입니다. '.repeat(12),url:'docs/sop.md#test',section:'테스트'};
 const store = () => ({...EMBEDDING_CONTRACT,corpusHash:sha256([chunk]),chunks:[{...chunk,vector:[...v]}]});
@@ -27,6 +27,8 @@ test('청크: 중복, 누락, 검증 필요 출처 거절',()=>{
   assert.throws(()=>validateChunks([chunk,chunk]));
   assert.throws(()=>validateChunks([{...chunk,text:'짧음'}]));
   assert.throws(()=>validateChunks([{...chunk,url:''}]));
+  assert.throws(()=>validateChunks([{...chunk,url:'https://'}]));
+  assert.throws(()=>validateChunks([{...chunk,url:'https://user:secret@example.com'}]));
   assert.throws(()=>validateChunks([{...chunk,text:chunk.text+'[검증 필요]'}]));
 });
 test('인덱스: 다른 모델, 차원, 본문 또는 오래된 해시를 거절',()=>{
@@ -64,4 +66,13 @@ test('NDJSON: 한글 UTF-8·임의 청크 경계·마지막 줄 처리',async()=
 });
 test('실제 코퍼스: 12~15청크 및 로컬 원문/앵커 일치',async()=>{
   const corpus=await loadCorpus();assert.ok(corpus.length>=12&&corpus.length<=15);await validateLocalSources(corpus);
+});
+test('개인 실행 로그는 Git 제외 폴더에만 저장',()=>{
+  assert.ok(resolveLogPath('.local-logs/demo.json').endsWith('demo.json'));
+  assert.throws(()=>resolveLogPath('experiments/leak.json'));
+  assert.throws(()=>resolveLogPath('.local-logs/../README.md'));
+});
+test('Ollama 시간 한도 오류를 설명하고 중단',()=>{
+  assert.equal(timeoutSetting('300000'),300000);
+  for(const value of ['abc','-1','1.5','0','900001'])assert.throws(()=>timeoutSetting(value));
 });

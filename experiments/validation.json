@@ -1,0 +1,9 @@
+{
+  "ok": true,
+  "chunks": 14,
+  "vectors": 14,
+  "dimension": 768,
+  "corpusHash": "19002ea753fc25aea25b35d1bc655277f0083e8e4c541591d8f32bcff63d8a7c",
+  "checkedAt": "2026-10-13T07:22:21.199Z",
+  "note": "공개 URL의 현재 HTTP 상태/내용은 docs/sources.md와 별도 관찰 기록으로 확인합니다."
+}

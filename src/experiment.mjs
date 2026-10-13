@@ -24,7 +24,7 @@ export async function runExperiment() {
   await fs.mkdir(output,{recursive:true});
   const store = await loadStore();
   const modelInfo = await checkOllama();
-  const manifest = { name:'RAG 유무 비교 E1',runId,startedAt,status:'running',environment:{node:process.version,platform:process.platform,arch:process.arch,cpu:os.cpus()[0]?.model||null,ramGB:Math.round(os.totalmem()/1024**3)},modelInfo,embedding:{model:store.model,dtype:store.dtype,dim:store.dim,corpusHash:store.corpusHash},settings:{topK:3,temperature:0,seed:42,numPredict:320,think:false},design:'질문 원문·순서·모델·생성 설정은 고정. 기준군은 검색 없는 일반 안내 프롬프트, RAG군은 검색 자료 및 근거 제한 규칙을 사용한다. 따라서 순수 검색 효과만 분리한 인과 실험이 아닌 두 파이프라인의 비교다.',questions:QUESTIONS,searches:[],runs:[]};
+  const manifest = { name:process.env.RAG_EXPERIMENT_NAME || 'RAG 유무 비교',runId,startedAt,status:'running',environment:{node:process.version,platform:process.platform,arch:process.arch,cpu:os.cpus()[0]?.model||null,ramGB:Math.round(os.totalmem()/1024**3)},modelInfo,embedding:{model:store.model,dtype:store.dtype,dim:store.dim,corpusHash:store.corpusHash},settings:{topK:3,temperature:0,seed:42,numPredict:320,think:false},design:'질문 원문·순서·모델·생성 설정은 고정. 기준군은 검색 없는 일반 안내 프롬프트, RAG군은 검색 자료 및 근거 제한 규칙을 사용한다. 따라서 순수 검색 효과만 분리한 인과 실험이 아닌 두 파이프라인의 비교다.',questions:QUESTIONS,searches:[],runs:[]};
   await writeJSON(resolveProject(relativeDir,'manifest.json'),manifest);
   for (const q of QUESTIONS) {
     console.error('[검색] '+q.id+' '+q.question);

@@ -1,0 +1,26 @@
+인덱싱 1/14: DP-001
+임베딩 모델 로딩 중. 첫 실행에는 모델 다운로드가 필요합니다.
+다운로드: config.json
+다운로드: tokenizer.json
+다운로드: tokenizer_config.json
+다운로드: onnx/model_quantized.onnx
+다운로드: onnx/model_quantized.onnx_data
+인덱싱 2/14: DP-002
+인덱싱 3/14: DP-003
+인덱싱 4/14: DP-004
+인덱싱 5/14: DP-005
+인덱싱 6/14: DP-006
+인덱싱 7/14: DP-007
+인덱싱 8/14: DP-008
+인덱싱 9/14: DP-009
+인덱싱 10/14: DP-010
+인덱싱 11/14: DP-011
+인덱싱 12/14: DP-012
+인덱싱 13/14: DP-013
+인덱싱 14/14: DP-014
+{
+  "chunks": 14,
+  "dim": 768,
+  "elapsedMs": 3454,
+  "createdAt": "2026-10-13T07:22:20.599Z"
+}

@@ -6,7 +6,7 @@
   "normalize": true,
   "documentPrefix": "title: {section} | text: {text}",
   "queryPrefix": "task: search result | query: {question}",
-  "createdAt": "2026-10-13T07:11:56.481Z",
+  "createdAt": "2026-10-13T07:22:20.599Z",
   "corpusHash": "19002ea753fc25aea25b35d1bc655277f0083e8e4c541591d8f32bcff63d8a7c",
   "chunks": [
     {

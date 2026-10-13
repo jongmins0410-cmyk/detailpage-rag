@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-10-13T07:22:18.098Z",
+  "scannedFiles": 68,
+  "secretPatternFiles": [],
+  "excluded": [
+    "node_modules",
+    ".cache",
+    ".git",
+    ".local-logs"
+  ],
+  "scope": "정해진 교육용 질문과 공개/자체 작성 자료만 제출. 패턴 검사는 완전한 비밀 탐지 보장이 아님."
+}
